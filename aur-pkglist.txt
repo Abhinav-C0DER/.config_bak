@@ -1,0 +1,7 @@
+lib32-vulkan-mesa-device-select 1:25.2.7-1
+python-materialyoucolor-debug 2.0.10-1
+visual-studio-code-bin 1.104.1-1
+vulkan-mesa-device-select 1:25.2.7-1
+wl-screenrec-debug 0.1.7-1
+yay 12.5.0-1
+yay-debug 12.5.0-1

@@ -1,0 +1,8 @@
+[Default Applications]
+application/vnd.debian.binary-package=thunar.desktop
+text/x-csrc=code.desktop
+
+[Added Associations]
+application/vnd.debian.binary-package=thunar.desktop;
+text/x-csrc=code.desktop;nvim.desktop;
+application/pdf=firefox.desktop;libreoffice-draw.desktop;

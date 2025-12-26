@@ -1,0 +1,108 @@
+/* Catppuccin Macchiato theme */
+
+/* Define colors */
+@define-color base   #24273a;
+@define-color mantle #1e2030;
+@define-color crust  #181926;
+@define-color text     #cad3f5;
+@define-color subtext0 #a5adce;
+@define-color subtext1 #b8c0e0;
+@define-color surface0 #363a4f;
+@define-color surface1 #494d64;
+@define-color surface2 #5b6078;
+@define-color overlay0 #6e738d;
+@define-color overlay1 #8087a2;
+@define-color overlay2 #939ab7;
+@define-color blue      #8aadf4;
+@define-color lavender  #b7bdf8;
+@define-color sapphire  #7dc4e4;
+@define-color sky       #91d7e3;
+@define-color teal      #8bd5ca;
+@define-color green     #a6da95;
+@define-color yellow    #eed49f;
+@define-color peach     #f5a97f;
+@define-color maroon    #ee99a0;
+@define-color red       #ed8796;
+@define-color mauve     #c6a0f6;
+@define-color pink      #f5bde6;
+@define-color flamingo  #f0c6c6;
+@define-color rosewater #f4dbd6;
+
+/* Reset all styles */
+* {
+    border: none;
+    border-radius: 0;
+    font-family: 'JetBrainsMono Nerd Font';
+    font-size: 14px;
+    min-height: 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+window#waybar {
+    background: transparent;
+    color: @text;
+}
+
+/* Base module style - NOTE: #custom-uptime is now included */
+#workspaces,
+#clock,
+#battery,
+#pulseaudio,
+#network,
+#cpu,
+#memory,
+#temperature,
+#tray,
+#custom-playerctl,
+#custom-uptime {
+    background-color: rgba(30, 32, 48, 0.6);
+    padding: 2px 12px;
+    margin: 4px 4px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* THE CRUCIAL GROUPING RULE - This was missing */
+.sys-module + .sys-module {
+    margin-left: -6px;
+    border-left: none;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/* Style for specific modules and states */
+#workspaces {
+    background-color: rgba(24, 25, 38, 0.6);
+    padding-left: 8px;
+    padding-right: 4px;
+}
+
+#workspaces button {
+    color: @overlay0;
+    padding: 0 5px;
+    transition: all 0.3s ease;
+}
+
+#workspaces button.occupied {
+    color: @text;
+}
+
+#workspaces button.active {
+    color: @mauve;
+}
+
+#workspaces button:hover {
+    background-color: @surface0;
+}
+
+#pulseaudio { color: @lavender; }
+#network { color: @teal; }
+#cpu { color: @green; }
+#memory { color: @sky; }
+#temperature { color: @yellow; }
+#battery { color: @peach; }
+#clock { color: @mauve; font-weight: bold; }
+#custom-uptime { color: @flamingo; }
+
+#battery.warning:not(.charging) { color: @maroon; }
+#temperature.critical { color: @red; }
