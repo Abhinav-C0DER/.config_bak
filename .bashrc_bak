@@ -1,0 +1,87 @@
+# ~/.bashrc
+
+# 1. Export EDITOR (nvim is best for Kitty)
+export EDITOR=nvim
+
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+# 2. Basic Aliases
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+alias cp='cp -i'
+alias mv='mv -i'
+alias rm='rm -I'
+
+# 3. Prompt
+PS1='[\u@\h \W]\$ '
+
+# 4. Path setup
+export PATH="$PATH:/home/abhinav/.local/bin"
+
+# --- KITTY SPECIFIC FEATURES ---
+if [[ "$TERM" == "xterm-kitty" ]]; then
+  # Enable image preview inside the terminal
+  alias icat="kitty +kitten icat"
+  # Fix SSH issues (copies terminfo to remote servers automatically)
+  alias ssh="kitty +kitten ssh"
+fi
+
+# --- FZF FUNCTIONS ---
+
+# Ctrl+F: Insert Files
+__fzf_file_insert() {
+  local selected
+  selected=$(fzf --multi)
+  if [[ -n "$selected" ]]; then
+    local insert=""
+    while IFS= read -r line; do insert+="\"$line\" "; done <<< "$selected"
+    READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}${insert}${READLINE_LINE:$READLINE_POINT}"
+    READLINE_POINT=$(( READLINE_POINT + ${#insert} ))
+  fi
+}
+bind -x '"\C-f": __fzf_file_insert'
+
+# Alt+D: Insert Directories
+# (We use Alt+D because Ctrl+D is the standard "Exit/Logout" key)
+__fzf_dir_insert() {
+  local selected
+  selected=$(find . -type d 2>/dev/null | fzf --multi)
+  if [[ -n "$selected" ]]; then
+    local insert=""
+    while IFS= read -r dir; do insert+="\"$dir\" "; done <<< "$selected"
+    READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}${insert}${READLINE_LINE:$READLINE_POINT}"
+    READLINE_POINT=$(( READLINE_POINT + ${#insert} ))
+  fi
+}
+bind -x '"\ed": "__fzf_dir_insert"'
+
+# Ctrl+H: Insert History (Restored)
+# Safe on Kitty because Kitty distinguishes Backspace from Ctrl+H
+__fzf_history_insert() {
+  local selected
+  # --no-sort ensures your most recent commands are at the top
+  selected=$(history | fzf --multi --reverse --no-sort | sed 's/ *[0-9]* *//')
+  if [[ -n "$selected" ]]; then
+    local insert=""
+    while IFS= read -r cmd; do insert+="$cmd; "; done <<< "$selected"
+    READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}${insert}${READLINE_LINE:$READLINE_POINT}"
+    READLINE_POINT=$(( READLINE_POINT + ${#insert} ))
+  fi
+}
+bind -x '"\C-h": __fzf_history_insert'
+
+# --- Custom Aliases ---
+
+# Screen recording
+alias recdesktop="wf-recorder --audio --audio-device 'alsa_output.pci-0000_00_1f.3.analog-stereo.monitor'"
+
+# --- Environment Loaders ---
+
+# Load NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"
+
+# Load Rust/Cargo
+[ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
